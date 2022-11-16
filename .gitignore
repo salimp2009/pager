@@ -1,0 +1,14 @@
+.stack-work/
+.vscode/
+*~
+*.hi
+dist
+dist-newstyle
+cabal-dev
+cabal.sandbox.config
+.cabal-sandbox
+.stack-work
+.ghc.environment.*
+stack.yaml.lock
+
+
