@@ -49,7 +49,7 @@ paginate (ScreenDimensions rows cols) text =
   let unwrappedLines = Text.lines text
       wrappedLines    = concatMap (wordWrap cols) unwrappedLines
       pageLines       = groupsOf rows wrappedLines
-  in map Text.unlines pageLines  
+  in map Text.unlines pageLines
 
 -- >>>:i Text.lines
 -- lines :: Text -> [Text] 	-- Defined in ‘Data.Text’
