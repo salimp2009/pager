@@ -53,6 +53,11 @@ paginate (ScreenDimensions rows cols) text =
       pageLines       = groupsOf rows wrappedLines
   in map Text.unlines pageLines
 
+-- | screen dimensipn
+{-
+>>>getTerminalSize
+ScreenDimensions {screenRows = 1, screenCols = 1}
+-}
 getTerminalSize :: IO ScreenDimensions
 getTerminalSize =
   case System.Info.os of 
