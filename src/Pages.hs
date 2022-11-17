@@ -14,6 +14,8 @@ module Pages where
 import qualified Data.Text as Text
 import qualified Data.Text.IO as TextIO
 import Control.Monad (guard)
+import qualified System.Process as Process
+import qualified System.Info
 
 groupsOf :: Int -> [a] -> [[a]]
 groupsOf 0 _  = []
@@ -50,6 +52,30 @@ paginate (ScreenDimensions rows cols) text =
       wrappedLines    = concatMap (wordWrap cols) unwrappedLines
       pageLines       = groupsOf rows wrappedLines
   in map Text.unlines pageLines
+
+getTerminalSize :: IO ScreenDimensions
+getTerminalSize =
+  case System.Info.os of 
+    "darwin" -> tputScreenDimensions
+    "linux"  -> tputScreenDimensions
+    _other   -> pure $ ScreenDimensions 25 80
+  where
+    -- tputScreenDimensions :: IO ScreenDimensions
+    -- tputScreenDimensions = 
+    --   Process.readProcess "tput" ["lines"] ""
+    --   >>= \lines ->
+    --     Process.readProcess "tput" ["cols"] ""
+    --   >>= \cols ->   
+    --     let lines' = read $ init lines
+    --         cols'   = read $ init cols
+    --     in return $ ScreenDimensions lines' cols'            
+    tputScreenDimensions :: IO ScreenDimensions
+    tputScreenDimensions = do
+        lines <- Process.readProcess "tput" ["lines"] ""  
+        cols  <- Process.readProcess "tput" ["cols"] ""
+        let lines' = read $ init lines
+            cols'  = read $ init cols
+        return $ ScreenDimensions lines' cols'
 
 -- >>>:i Text.lines
 -- lines :: Text -> [Text] 	-- Defined in ‘Data.Text’
