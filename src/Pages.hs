@@ -1,3 +1,4 @@
+{-# LANGUAGE DerivingStrategies #-}
 {-|
 Pages are list of line
 Groups will be the list of pages
@@ -16,6 +17,7 @@ import qualified Data.Text.IO as TextIO
 import Control.Monad (guard)
 import qualified System.Process as Process
 import qualified System.Info
+import System.IO (stdin, hGetChar, BufferMode (NoBuffering), hSetBuffering, hSetEcho)
 
 groupsOf :: Int -> [a] -> [[a]]
 groupsOf 0 _  = []
@@ -81,6 +83,20 @@ getTerminalSize =
         let lines' = read $ init lines
             cols'  = read $ init cols
         return $ ScreenDimensions lines' cols'
+
+data ContinueCancel = Continue | Cancel 
+  deriving stock (Eq, Show)   
+
+getContinue :: IO ContinueCancel
+getContinue =  do
+   hSetBuffering stdin NoBuffering 
+   hSetEcho stdin False 
+   userinput <- hGetChar stdin
+   case userinput of
+    ' ' -> return Continue
+    'q' -> return Cancel 
+    'Q' -> return Cancel
+    _   -> getContinue
 
 -- >>>:i Text.lines
 -- lines :: Text -> [Text] 	-- Defined in ‘Data.Text’

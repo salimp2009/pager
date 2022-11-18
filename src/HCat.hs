@@ -1,11 +1,12 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE TypeApplications #-}
-module HCat (runHCat) where
+module HCat (runHCat, runHCat7) where
 import qualified System.Environment as Env 
 import qualified Control.Exception as Exception
 import qualified System.IO.Error as IOError 
 import qualified Data.Text as Text
 import qualified Data.Text.IO as TextIO
+import Pages (getContinue, ContinueCancel (..))
 
 handleArgs :: IO (Either String FilePath)
 handleArgs = 
@@ -117,5 +118,12 @@ runHCat =
       Exception.catch ioAction $
         \err -> print "ran into an error =>" >> print @IOError err
 
-  
+runHCat7 :: IO ()      
+runHCat7 = do 
+  putStrLn "to Continue please press (Space) or to Quit press(q or Q)"  
+  contCancel  <- getContinue
+  case contCancel of
+    Continue -> putStrLn "ok Continuing...!" >> runHCat7
+    Cancel   -> putStrLn "goodbye :)"
+
 
