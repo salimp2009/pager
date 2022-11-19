@@ -1,4 +1,5 @@
 {-# LANGUAGE DerivingStrategies #-}
+{-# LANGUAGE OverloadedStrings #-}
 {-|
 Pages are list of line
 Groups will be the list of pages
@@ -18,7 +19,8 @@ import Control.Monad (guard)
 import qualified System.Process as Process
 import qualified System.Info
 import System.IO (stdin, hGetChar, BufferMode (NoBuffering), hSetBuffering, hSetEcho)
-
+import qualified Data.ByteString as BS
+import qualified Data.ByteString as BS
 groupsOf :: Int -> [a] -> [[a]]
 groupsOf 0 _  = []
 groupsOf _ [] = []
@@ -97,6 +99,21 @@ getContinue =  do
     'q' -> return Cancel 
     'Q' -> return Cancel
     _   -> getContinue
+
+showPages :: [Text.Text] -> IO ()
+showPages [] = return ()
+showPages (page:pages) = do
+  clearScreen
+  TextIO.putStrLn page
+  contCancel <- getContinue
+  case contCancel of
+    Continue -> showPages pages
+    Cancel   -> return ()
+
+clearScreen :: IO ()    
+clearScreen =
+  BS.putStr "\^[[1J\^[[1;1H"
+
 
 -- >>>:i Text.lines
 -- lines :: Text -> [Text] 	-- Defined in ‘Data.Text’
