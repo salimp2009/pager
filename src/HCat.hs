@@ -1,12 +1,16 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE OverloadedStrings #-}
 module HCat (runHCat, runHCat7) where
 import qualified System.Environment as Env 
 import qualified Control.Exception as Exception
 import qualified System.IO.Error as IOError 
 import qualified Data.Text as Text
 import qualified Data.Text.IO as TextIO
-import Pages (getContinue, ContinueCancel (..))
+import Pages (getContinue, ContinueCancel (..), getTerminalSize, showPages, paginate)
+import System.IO (openFile, IOMode (ReadMode))
+
+
 
 handleArgs :: IO (Either String FilePath)
 handleArgs = 
@@ -105,8 +109,8 @@ eitherToError2 val = do
       let except = IOError.userError $ show err
       Exception.throwIO except
 
-runHCat :: IO ()      
-runHCat =
+runHCat8 :: IO ()      
+runHCat8 =
   handleIOError $
     handleArgs 
     >>= eitherToError
@@ -125,5 +129,21 @@ runHCat7 = do
   case contCancel of
     Continue -> putStrLn "ok Continuing...!" >> runHCat7
     Cancel   -> putStrLn "goodbye :)"
+
+runHCat :: IO ()
+runHCat =
+  handleArgs
+  >>= eitherToError
+  >>= flip openFile ReadMode
+  >>= TextIO.hGetContents 
+  >>= \contents ->
+    getTerminalSize >>= \termSize ->
+      let pages = paginate termSize contents
+      in showPages pages
+
+
+
+
+
 
 

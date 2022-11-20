@@ -20,7 +20,7 @@ import qualified System.Process as Process
 import qualified System.Info
 import System.IO (stdin, hGetChar, BufferMode (NoBuffering), hSetBuffering, hSetEcho)
 import qualified Data.ByteString as BS
-import qualified Data.ByteString as BS
+
 groupsOf :: Int -> [a] -> [[a]]
 groupsOf 0 _  = []
 groupsOf _ [] = []
@@ -105,6 +105,7 @@ showPages [] = return ()
 showPages (page:pages) = do
   clearScreen
   TextIO.putStrLn page
+  putStrLn "to Continue please press (Space) or to Quit press(q or Q)"
   contCancel <- getContinue
   case contCancel of
     Continue -> showPages pages

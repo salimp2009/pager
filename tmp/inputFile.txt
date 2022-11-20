@@ -1,2 +1,44 @@
 Hello yoow
 How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?How you doing Hasky ?How you doing Hasky ?
+How you doing Hasky ?How you doing Hasky ?How you doing Hasky ?
+v
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+v
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?How you doing Hasky ?How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+How you doing Hasky ?
+v
+How you doing Hasky ?
+How you doing Hasky ?How you doing Hasky ?
+
+Read the remaining contents of a Handle as a string. The Handle is closed once the contents have been read, or if an exception is thrown.
+
+Internally, this function reads a chunk at a time from the lower-level buffering abstraction, and concatenates the chunks into a single string once the entire file has been read.
