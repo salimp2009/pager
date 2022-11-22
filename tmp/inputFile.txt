@@ -42,3 +42,17 @@ How you doing Hasky ?How you doing Hasky ?
 Read the remaining contents of a Handle as a string. The Handle is closed once the contents have been read, or if an exception is thrown.
 
 Internally, this function reads a chunk at a time from the lower-level buffering abstraction, and concatenates the chunks into a single string once the entire file has been read.
+
+pub const fn is_empty(&self) -> bool
+Returns true if self has a length of zero bytes.
+
+Examples
+Basic usage:
+
+let s = "";
+assert!(s.is_empty());
+
+let s = "not empty";
+assert!(!s.is_empty());
+1.9.0 (const: unstable) 
+source

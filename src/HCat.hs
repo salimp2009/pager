@@ -11,7 +11,6 @@ import Pages (getContinue, ContinueCancel (..), getTerminalSize, showPages, pagi
 import System.IO (openFile, IOMode (ReadMode))
 
 
-
 handleArgs :: IO (Either String FilePath)
 handleArgs = 
     parseArgs <$> Env.getArgs 
@@ -135,15 +134,8 @@ runHCat =
   handleArgs
   >>= eitherToError
   >>= flip openFile ReadMode
-  >>= TextIO.hGetContents 
+  >>= TextIO.hGetChunk   -- ^ this was original @TextIO.hGetContents@
   >>= \contents ->
     getTerminalSize >>= \termSize ->
       let pages = paginate termSize contents
       in showPages pages
-
-
-
-
-
-
-

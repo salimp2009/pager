@@ -21,6 +21,7 @@ import qualified System.Info
 import System.IO (stdin, hGetChar, BufferMode (NoBuffering), hSetBuffering, hSetEcho)
 import qualified Data.ByteString as BS
 
+
 groupsOf :: Int -> [a] -> [[a]]
 groupsOf 0 _  = []
 groupsOf _ [] = []
