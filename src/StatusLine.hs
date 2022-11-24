@@ -14,7 +14,7 @@ import qualified System.Directory as Directory
 import qualified Data.Text.IO as TextIO
 import qualified Data.Text as Text
 import qualified Text.Printf as Printf
-import Foreign.Safe (IntPtr(IntPtr))
+
 
 -- | Basic file info
 data FileInfo = FileInfo
@@ -66,8 +66,8 @@ formatFileInfo FileInfo{..} maxWidth totalPages currentPage =
     where
     invertText inputStr =
       let
-        reverseVideo = "\^[[7m"
-        resetVideo = "\^[[0m"
+        reverseVideo = "\^[[04m"
+        resetVideo = "\^[[1m"
       in reverseVideo <> inputStr <> resetVideo
     truncateStatus statusLine
             | maxWidth <= 3 = ""
