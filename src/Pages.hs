@@ -20,6 +20,7 @@ import qualified System.Process as Process
 import qualified System.Info
 import System.IO (stdin, hGetChar, BufferMode (NoBuffering), hSetBuffering, hSetEcho)
 import qualified Data.ByteString as BS
+import StatusLine (FileInfo, formatFileInfo)
 
 
 groupsOf :: Int -> [a] -> [[a]]
@@ -57,6 +58,20 @@ paginate (ScreenDimensions rows cols) text =
       wrappedLines    = concatMap (wordWrap cols) unwrappedLines
       pageLines       = groupsOf rows wrappedLines
   in map Text.unlines pageLines
+
+paginate2 :: ScreenDimensions -> FileInfo -> Text.Text -> [Text.Text] 
+paginate2 (ScreenDimensions rows cols) finfo text =
+  let 
+    rows' = rows - 1
+    wrappedLines = concatMap (wordWrap cols) (Text.lines text)
+    pages = map (Text.unlines . padTo rows') $ groupsOf rows' wrappedLines
+    pageCount = length pages
+    statusLines = map (formatFileInfo finfo cols pageCount) [1..pageCount]
+  in  zipWith (<>) pages statusLines
+  where
+    padTo :: Int -> [Text.Text] -> [Text.Text]
+    padTo lineCount rowsToPad = 
+      take lineCount $ rowsToPad <> repeat ""
 
 -- | screen dimensipn
 {-
