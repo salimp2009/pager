@@ -7,8 +7,10 @@ import qualified Control.Exception as Exception
 import qualified System.IO.Error as IOError 
 import qualified Data.Text as Text
 import qualified Data.Text.IO as TextIO
-import Pages (getContinue, ContinueCancel (..), getTerminalSize, showPages, paginate)
-import System.IO (openFile, IOMode (ReadMode))
+import Pages (getContinue, ContinueCancel (..), getTerminalSize, showPages, paginate, paginate2)
+import System.IO (openFile, IOMode (ReadMode), hSetBuffering, stdout, BufferMode (NoBuffering))
+import StatusLine (fileInfo)
+
 
 
 handleArgs :: IO (Either String FilePath)
@@ -129,8 +131,8 @@ runHCat7 = do
     Continue -> putStrLn "ok Continuing...!" >> runHCat7
     Cancel   -> putStrLn "goodbye :)"
 
-runHCat :: IO ()
-runHCat =
+runHCat9 :: IO ()
+runHCat9 =
   handleArgs
   >>= eitherToError
   >>= flip openFile ReadMode
@@ -139,3 +141,17 @@ runHCat =
     getTerminalSize >>= \termSize ->
       let pages = paginate termSize contents
       in showPages pages
+
+runHCat :: IO ()
+runHCat = 
+  handleArgs
+  >>= eitherToError
+  >>= \targetFilePath ->
+        openFile targetFilePath ReadMode
+        >>= TextIO.hGetContents
+        >>= \contents ->
+           getTerminalSize >>= \termSize ->
+             hSetBuffering stdout NoBuffering
+             >> fileInfo targetFilePath >>= \finfo ->
+               let pages = paginate2 termSize finfo contents
+               in showPages pages
