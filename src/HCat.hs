@@ -142,8 +142,8 @@ runHCat9 =
       let pages = paginate termSize contents
       in showPages pages
 
-runHCat :: IO ()
-runHCat = 
+runHCat10 :: IO ()
+runHCat10 = 
   handleArgs
   >>= eitherToError
   >>= \targetFilePath ->
@@ -155,3 +155,33 @@ runHCat =
              >> fileInfo targetFilePath >>= \finfo ->
                let pages = paginate2 termSize finfo contents
                in showPages pages
+
+
+runHCat11 :: IO ()
+runHCat11 = do
+  args <- handleArgs
+  targetFilePath <- eitherToError args
+  fileHandle <- openFile targetFilePath ReadMode
+  contents <- TextIO.hGetContents fileHandle   
+  termSize <-  getTerminalSize 
+  hSetBuffering stdout NoBuffering
+  finfo <- fileInfo targetFilePath 
+  let pages = paginate2 termSize finfo contents
+  showPages pages               
+
+-- | final refactored
+runHCat :: IO ()
+runHCat = do
+  targetFilePath <- do
+    args <- handleArgs
+    eitherToError args
+  
+  contents <- do 
+    fileHandle <- openFile targetFilePath ReadMode
+    TextIO.hGetContents fileHandle    
+  
+  termSize <-  getTerminalSize 
+  hSetBuffering stdout NoBuffering
+  finfo <- fileInfo targetFilePath 
+  let pages = paginate2 termSize finfo contents
+  showPages pages  

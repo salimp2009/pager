@@ -66,8 +66,8 @@ formatFileInfo FileInfo{..} maxWidth totalPages currentPage =
     where
     invertText inputStr =
       let
-        reverseVideo = "\^[[04m"
-        resetVideo = "\^[[1m"
+        reverseVideo = "\^[[07m"
+        resetVideo = "\^[[0m"
       in reverseVideo <> inputStr <> resetVideo
     truncateStatus statusLine
             | maxWidth <= 3 = ""
